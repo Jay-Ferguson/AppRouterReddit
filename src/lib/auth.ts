@@ -4,17 +4,8 @@ import { db } from "./db";
 import { nanoid } from "nanoid";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
-
-// declare module "next-auth" {
-//   interface User {
-//     id: string | number;
-//   }
-
-//   interface Session {
-//     user: User;
-//   }
-// }
-
+import type { JWT } from "next-auth/jwt";
+import type session from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -29,11 +20,13 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+
   ],
+
   callbacks: {
     async session({ token, session, user }) {
       if (token) {
-        user.id = token.id
+        session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture;
@@ -62,20 +55,17 @@ export const authOptions: NextAuthOptions = {
         });
       }
       return {
-          id: dbUser.id,
-          name: dbUser.name,
-          email: dbUser.email,
-          picture: dbUser.image,
-          userName: dbUser.username,
-      }
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        picture: dbUser.image,
+        userName: dbUser.username,
+      };
     },
 
     redirect() {
-     return '/'
-    }
+      return "/";
+    },
   },
-}
-export const getAuthSession = () => {
-  getServerSession(authOptions)
-}
-
+};
+export const getAuthSession = () => getServerSession(authOptions);

@@ -3,6 +3,10 @@ import { Icons } from "./ui/Icons";
 import Link from "next/link";
 import UserAuthForm from "./UserAuthForm";
 
+type SignInProps = {
+  
+}
+
 const SignIn: FC<SignInProps> = () => {
   return (
     <div className="container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
@@ -17,9 +21,9 @@ const SignIn: FC<SignInProps> = () => {
         {/* sign in form */}
         <UserAuthForm></UserAuthForm>
         <p className="px-8 text-center text-sm text-zinc-700">
-          New tp Breddit?{" "}
+          New to Breddit?{" "}
           <Link
-            href="/sign-ip"
+            href="/sign-up"
             className="hover:text-zinc-800 text-sm underline underline-offset-4"
           >
             Sign up
