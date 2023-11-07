@@ -1,4 +1,4 @@
-'use-client'
+'use client'
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactNode } from "react";

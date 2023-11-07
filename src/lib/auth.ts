@@ -4,6 +4,7 @@ import { db } from "./db";
 import { nanoid } from "nanoid";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
 import type { JWT } from "next-auth/jwt";
 import type session from "next-auth";
 
@@ -21,6 +22,10 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
 
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    }),
   ],
 
   callbacks: {
@@ -32,6 +37,7 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.picture;
         session.user.username = token.username;
       }
+      console.log(session);
       return session;
     },
     async jwt({ token, user }) {

@@ -5,6 +5,9 @@ import Navbar from '@/components/Navbar'
 import { Toaster } from '@/components/ui/Toaster'
 import {Inter} from 'next/font/google'
 import Providers from '@/components/Providers'
+import { getServerSession } from 'next-auth'
+
+import { SessionProvider } from 'next-auth/react'
 
 {/* ts-expect-error Server Component */}
 
@@ -14,16 +17,18 @@ export const metadata = {
 }
 const inter = Inter({subsets: ['latin']})
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getServerSession();
   return (
     <html lang='en' className={cn('bn-white text-slate-900 antialiased light',
     )}>
       <body className='min-h-screen pt-12 bg-slate-50 antialiased'>
         <Providers>
+        <SessionProvider session={session}>
 
         <Navbar /> 
 
@@ -33,6 +38,7 @@ export default function RootLayout({
         </div>
 
         <Toaster />
+        </SessionProvider>
         </Providers>
          {children}</body>
     </html>
